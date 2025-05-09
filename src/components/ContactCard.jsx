@@ -1,40 +1,29 @@
-//mostrara solo un contacto toda su info
-//aqui van lo
+// //mostrara solo un contacto toda su info
 
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-import { ModalConfirm } from "./ModalConfirm"; // Importamos el modal
+import { ModalConfirm } from "./ModalConfirm";
 
 export const ContactCard = ({ contact }) => {
-  const { store, dispatch, actions } = useGlobalReducer();
-  const [showModal, setShowModal] = useState(false);
+  const { store, dispatch } = useGlobalReducer();
+  const modalId = `modal-delete-${contact.id}`; // ID único del modal
 
   const deleteContact = async (id) => {
     try {
-      const resp= await fetch(`https://playground.4geeks.com/contact/agendas/jenn-agenda/contacts/${id}`, {
+      const resp = await fetch(`https://playground.4geeks.com/contact/agendas/jenn-agenda/contacts/${id}`, {
         method: "DELETE",
       });
-      if (!resp.ok) {
-        throw new Error("Error en la respuesta de la API");
-      }
-      const data = await resp;
-      // Actualiza la lista de contactos después de eliminar
+      if (!resp.ok) throw new Error("Error en la respuesta de la API");
+
       const updatedContacts = store.contacts.filter(c => c.id !== id);
       dispatch({ type: "set_contacts", payload: updatedContacts });
     } catch (error) {
       console.error("Error al eliminar contacto", error);
     }
-  }
-
-  // Función que confirma la eliminación
-  const confirmDelete = () => {
-    deleteContact(contact.id);
-    setShowModal(false); // Cierra el modal después de eliminar
   };
 
-  const handleDelete = () => {
-    setShowModal(true); // Abre el modal
+  const confirmDelete = () => {
+    deleteContact(contact.id);
   };
 
   return (
@@ -58,21 +47,20 @@ export const ContactCard = ({ contact }) => {
             <Link to={`/edit/${contact.id}`} className="btn btn-outline-primary btn-sm mb-2">
               <i className="fa-solid fa-pen"></i>
             </Link>
-            <button className="btn btn-outline-danger btn-sm" onClick={handleDelete}>
-              <i className="fa-solid fa-trash"></i> {/* Icono de eliminar */}
+            <button className="btn btn-outline-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target={`#${modalId}`}>
+              <i className="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Solo renderiza el modal si showModal es true */}
-      {showModal && (
-        <ModalConfirm
-          id={`modal-delete-${contact.id}`}
-          message={`¿Estás seguro de eliminar a ${contact.name}?`}
-          onConfirm={confirmDelete} // Acción para eliminar el contacto
-        />
-      )}
+      <ModalConfirm
+        id={modalId}
+        message={`¿Estás seguro de eliminar a ${contact.name}?`}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 };
