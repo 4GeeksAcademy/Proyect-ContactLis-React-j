@@ -7,7 +7,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 import { ModalConfirm } from "./ModalConfirm"; // Importamos el modal
 
 export const ContactCard = ({ contact }) => {
-  const { actions } = useGlobalReducer();
+  const { store, dispatch, actions } = useGlobalReducer();
   const [showModal, setShowModal] = useState(false);
 
   const deleteContact = async (id) => {

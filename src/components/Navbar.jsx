@@ -8,7 +8,7 @@ export const Navbar = () => {
 			<div className="container">
 				{/* este texto cambia según la ruta */}
 				<Link to="/" className="navbar-brand fw-bold text-primary">
-					<i class="fa-regular fa-address-book"></i>  {location.pathname === "/add" ? "Ir a mi agenda" : "Mi Agenda"}
+					<i className="fa-regular fa-address-book"></i>  {location.pathname === "/add" ? "Ir a mi agenda" : "Mi Agenda"}
 				</Link>
 
 			</div>

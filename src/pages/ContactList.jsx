@@ -10,7 +10,7 @@ export const ContactList = () => {
 
     const loadContacts = async () => {
         try {
-            const resp = await fetch("https://playground.4geeks.com/contact/agendas/jenn-agenda");
+            const resp = await fetch("https://playground.4geeks.com/contact/agendas/jenn-agenda/contacts");
             if (!resp.ok) {
                 throw new Error("Error en la respuesta de la API");
             }
